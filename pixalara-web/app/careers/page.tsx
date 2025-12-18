@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { 
   FaArrowRight, FaClock, FaMapMarkerAlt,
   FaLaptop, FaMoneyBillWave, 
@@ -70,8 +70,8 @@ const countryCodes = [
   { code: "+", country: "OT", flag: "🌐" },
 ];
 
-// === PREMIUM ANIMATIONS ===
-const containerVariants = { 
+// === PREMIUM ANIMATIONS (Fixed Types) ===
+const containerVariants: Variants = { 
   hidden: { opacity: 0 }, 
   visible: { 
     opacity: 1, 
@@ -79,7 +79,7 @@ const containerVariants = {
   } 
 };
 
-const cardVariants = { 
+const cardVariants: Variants = { 
   hidden: { opacity: 0, y: 30, scale: 0.95 }, 
   visible: { 
     opacity: 1, 
@@ -89,7 +89,7 @@ const cardVariants = {
   } 
 };
 
-const hoverPerk = {
+const hoverPerk: Variants = {
   hover: { 
     y: -10,
     backgroundColor: "rgba(255, 255, 255, 0.08)",
@@ -99,7 +99,7 @@ const hoverPerk = {
   }
 };
 
-const modalVariants = {
+const modalVariants: Variants = {
   hidden: { opacity: 0, scale: 0.9, y: 20 },
   visible: { 
     opacity: 1, 
