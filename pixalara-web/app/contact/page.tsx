@@ -1,48 +1,59 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaEnvelope, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaChevronDown } from 'react-icons/fa';
+import Link from 'next/link';
+import { 
+  FaEnvelope, FaMapMarkerAlt, FaPaperPlane, 
+  FaCheckCircle, FaSpinner, FaChevronDown, 
+  FaCheck, FaHome 
+} from 'react-icons/fa';
 
-// Top 30 Countries + Others
+// === COUNTRY LIST ===
 const countryCodes = [
-  { code: "+91", country: "IN", flag: "🇮🇳", name: "India" },
-  { code: "+1", country: "US", flag: "🇺🇸", name: "USA" },
-  { code: "+44", country: "GB", flag: "🇬🇧", name: "UK" },
-  { code: "+971", country: "AE", flag: "🇦🇪", name: "UAE" },
-  { code: "+61", country: "AU", flag: "🇦🇺", name: "Australia" },
-  { code: "+1", country: "CA", flag: "🇨🇦", name: "Canada" },
-  { code: "+49", country: "DE", flag: "🇩🇪", name: "Germany" },
-  { code: "+33", country: "FR", flag: "🇫🇷", name: "France" },
-  { code: "+81", country: "JP", flag: "🇯🇵", name: "Japan" },
-  { code: "+65", country: "SG", flag: "🇸🇬", name: "Singapore" },
-  { code: "+66", country: "TH", flag: "🇹🇭", name: "Thailand" },
-  { code: "+86", country: "CN", flag: "🇨🇳", name: "China" },
-  { code: "+39", country: "IT", flag: "🇮🇹", name: "Italy" },
-  { code: "+7", country: "RU", flag: "🇷🇺", name: "Russia" },
-  { code: "+55", country: "BR", flag: "🇧🇷", name: "Brazil" },
-  { code: "+27", country: "ZA", flag: "🇿🇦", name: "South Africa" },
-  { code: "+82", country: "KR", flag: "🇰🇷", name: "South Korea" },
-  { code: "+34", country: "ES", flag: "🇪🇸", name: "Spain" },
-  { code: "+31", country: "NL", flag: "🇳🇱", name: "Netherlands" },
-  { code: "+41", country: "CH", flag: "🇨🇭", name: "Switzerland" },
-  { code: "+46", country: "SE", flag: "🇸🇪", name: "Sweden" },
-  { code: "+966", country: "SA", flag: "🇸🇦", name: "Saudi Arabia" },
-  { code: "+52", country: "MX", flag: "🇲🇽", name: "Mexico" },
-  { code: "+62", country: "ID", flag: "🇮🇩", name: "Indonesia" },
-  { code: "+90", country: "TR", flag: "🇹🇷", name: "Turkey" },
-  { code: "+84", country: "VN", flag: "🇻🇳", name: "Vietnam" },
-  { code: "+63", country: "PH", flag: "🇵🇭", name: "Philippines" },
-  { code: "+60", country: "MY", flag: "🇲🇾", name: "Malaysia" },
-  { code: "+64", country: "NZ", flag: "🇳🇿", name: "New Zealand" },
-  { code: "+", country: "OT", flag: "🌐", name: "Other" },
+  { code: "+91", country: "IN", flag: "🇮🇳" }, { code: "+1", country: "US", flag: "🇺🇸" },
+  { code: "+44", country: "GB", flag: "🇬🇧" }, { code: "+971", country: "AE", flag: "🇦🇪" },
+  { code: "+61", country: "AU", flag: "🇦🇺" }, { code: "+1", country: "CA", flag: "🇨🇦" },
+  { code: "+49", country: "DE", flag: "🇩🇪" }, { code: "+33", country: "FR", flag: "🇫🇷" },
+  { code: "+81", country: "JP", flag: "🇯🇵" }, { code: "+65", country: "SG", flag: "🇸🇬" },
+  { code: "+", country: "OT", flag: "🌐" },
 ];
 
+// === ANIMATION VARIANTS ===
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1, 
+    transition: { staggerChildren: 0.05, delayChildren: 0.2 } 
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: "spring", stiffness: 50 } 
+  }
+};
+
 export default function ContactPage() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [countryCode, setCountryCode] = useState(countryCodes[0]); 
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  
+  // Form State
+  const [formData, setFormData] = useState({
+    name: '', email: '', mobile: '', service: '', budget: '', message: ''
+  });
+  
+  // Dropdown State
+  const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // UPDATED LISTS
+  const services = ["Web Design", "App Dev", "Branding", "Digital Marketing", "Cloud/DevOps", "Others"];
+  const budgets = ["$100 - $1k", "$1k - $5k", "$5k - $10k", "$10k - $50k", "$50k+"];
+
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -53,29 +64,33 @@ export default function ContactPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleChange = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus('sending');
+    setStatus('submitting');
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const fullPhone = `${countryCode.code} ${formData.get('mobile_number')}`;
-    formData.append("Full_Phone_Number", fullPhone);
-
-    // === WEB3FORMS CONFIGURATION ===
-    formData.append("access_key", "fc78a175-8f5d-4b45-94bd-ca3cd956725e"); 
-    formData.append("subject", "New Inquiry from Pixalara Contact Page");
-    formData.append("from_name", "Pixalara Website");
+    const data = {
+      // Use your Access Key here
+      access_key: "fc78a175-8f5d-4b45-94bd-ca3cd956725e", 
+      subject: "New Project Inquiry - Pixalara",
+      from_name: "Pixalara Website",
+      ...formData,
+      full_phone: `${selectedCountry.code} ${formData.mobile}`
+    };
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: formData
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data)
       });
       const result = await response.json();
       if (result.success) {
         setStatus('success');
-        form.reset();
+        setFormData({ name: '', email: '', mobile: '', service: '', budget: '', message: '' });
       } else {
         setStatus('error');
       }
@@ -85,157 +100,240 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="bg-black min-h-screen pt-32 px-6 flex flex-col md:flex-row max-w-7xl mx-auto gap-16 pb-20 items-center">
+    <main className="min-h-screen pt-32 pb-20 px-6 overflow-hidden">
       
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #444; }
-      `}</style>
+      {/* Background Decor */}
+      <div className="fixed top-0 left-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-      {/* Left Side: Info */}
-      <motion.div 
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="flex-1"
-      >
-        <h1 className="text-7xl md:text-9xl font-bold text-white mb-10 tracking-tighter leading-none">
-          Let's <br />
-          {/* UPDATED GRADIENT: Purple to Pink (Matches "Works") */}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
-            Talk.
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start relative z-10">
+        
+        {/* === LEFT SIDE: INFO === */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="lg:sticky lg:top-40"
+        >
+          <span className="inline-block py-1 px-3 rounded-full bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold tracking-widest uppercase mb-6">
+            Get In Touch
           </span>
-        </h1>
-        <p className="text-xl text-gray-400 max-w-md leading-relaxed mb-12">
-          Have a project in mind? We’d love to hear from you. We work globally with brands of all sizes.
-        </p>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter leading-[1.1]">
+            Let's Build <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+              Something Great.
+            </span>
+          </h1>
+          <p className="text-xl text-gray-400 mb-12 max-w-lg leading-relaxed">
+            Tell us about your goals. Whether it's a new platform, a rebrand, or cloud infrastructure, we are ready to engineer your success.
+          </p>
 
-        <div className="space-y-8">
-          <div className="flex items-center gap-5">
-            <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-cyan-400 text-xl"><FaEnvelope /></div>
-            <div><p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Email Us</p><a href="mailto:hello@pixalara.com" className="text-2xl text-white font-bold hover:text-cyan-400">hello@pixalara.com</a></div>
-          </div>
-          <div className="flex items-center gap-5">
-            <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-purple-400 text-xl"><FaPhoneAlt /></div>
-            <div><p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Call Us</p><p className="text-2xl text-white font-bold">+1 (555) 123-4567</p></div>
-          </div>
-        </div>
-      </motion.div>
+          {/* Contact Details Cards */}
+          <div className="space-y-6">
+            <a href="mailto:hello@pixalara.com" className="flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-blue-500/30 transition-all group cursor-pointer">
+              <div className="w-14 h-14 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-2xl text-blue-400 group-hover:scale-110 transition-transform">
+                <FaEnvelope />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Email Us</p>
+                <p className="text-xl text-white font-medium group-hover:text-blue-400 transition-colors">hello@pixalara.com</p>
+              </div>
+            </a>
 
-      {/* Right Side: Contact Form */}
-      <motion.div 
-         initial={{ opacity: 0, scale: 0.95 }}
-         animate={{ opacity: 1, scale: 1 }}
-         transition={{ delay: 0.2 }}
-         className="flex-1 bg-neutral-900 rounded-[2rem] border border-white/10 p-8 relative overflow-visible flex flex-col justify-center shadow-2xl"
-      >
-        {status === 'success' ? (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-10"
-          >
-            <div className="relative mb-6">
-              <div className="absolute inset-0 bg-green-500 blur-[30px] opacity-20 rounded-full" />
-              <div className="relative w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-4xl text-white shadow-2xl mx-auto">
-                <FaCheckCircle />
+            <div className="flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/5 transition-all">
+              <div className="w-14 h-14 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-2xl text-purple-400">
+                <FaMapMarkerAlt />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">HQ</p>
+                <p className="text-xl text-white font-medium">Global / Remote First</p>
               </div>
             </div>
-            <h3 className="text-3xl font-bold text-white mb-3">Message Received.</h3>
-            <p className="text-gray-400 text-base mb-8 max-w-sm mx-auto leading-relaxed">
-              Thanks! We'll be in touch within <span className="text-white font-semibold">24 hours</span>.
-            </p>
-            <button 
-              onClick={() => setStatus('idle')} 
-              className="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm transition-all hover:scale-105"
+          </div>
+        </motion.div>
+
+
+        {/* === RIGHT SIDE: THE MERGED FORM === */}
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="relative"
+        >
+          <div className="p-8 md:p-10 rounded-[2.5rem] bg-neutral-900/50 backdrop-blur-xl border border-white/10 shadow-2xl shadow-purple-900/10 relative overflow-visible">
+            
+            {/* === PREMIUM SUCCESS STATE (RESTORED) === */}
+            <AnimatePresence>
+              {status === 'success' && (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-20 bg-neutral-900/95 backdrop-blur-xl rounded-[2.5rem] flex flex-col items-center justify-center text-center p-8 border border-white/10"
+                >
+                  <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                    <FaCheckCircle className="text-4xl text-green-500" />
+                  </div>
+                  
+                  <h3 className="text-3xl font-bold text-white mb-2">Request Received</h3>
+                  <p className="text-gray-400 text-sm mb-8 max-w-xs">
+                    Your vision is safe with us. Our engineering team has been notified.
+                  </p>
+
+                  {/* Value-Add Timeline */}
+                  <div className="w-full bg-white/5 rounded-xl p-6 mb-8 text-left border border-white/5">
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-4">Next Steps:</p>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-xs text-blue-400 font-bold">1</div>
+                        <p className="text-sm text-gray-300">Internal Review <span className="text-gray-600 text-xs ml-2">(In Progress)</span></p>
+                      </div>
+                      <div className="flex items-center gap-3 opacity-50">
+                        <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs text-white font-bold">2</div>
+                        <p className="text-sm text-gray-300">Discovery Call Scheduling</p>
+                      </div>
+                      <div className="flex items-center gap-3 opacity-50">
+                        <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs text-white font-bold">3</div>
+                        <p className="text-sm text-gray-300">Strategic Proposal</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 w-full">
+                    <Link href="/" className="flex-1">
+                      <button className="w-full py-4 rounded-xl bg-white text-black font-bold hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+                         <FaHome /> Home
+                      </button>
+                    </Link>
+                    <button 
+                      onClick={() => setStatus('idle')} 
+                      className="flex-1 py-4 rounded-xl border border-white/10 text-white font-bold hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                    >
+                      New Request
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ANIMATED FORM CONTAINER */}
+            <motion.form 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              onSubmit={handleSubmit} 
+              className="space-y-6 relative z-10"
             >
-              Done
-            </button>
-          </motion.div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
-            <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+              
+              {/* Row 1: Name & Email */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div variants={itemVariants} className="space-y-2">
+                  <label className="text-xs text-gray-400 font-bold uppercase tracking-wider ml-1">Name</label>
+                  <input required name="name" value={formData.name} onChange={handleChange} type="text" placeholder="John Doe" className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:bg-black/60 transition-all" />
+                </motion.div>
+                <motion.div variants={itemVariants} className="space-y-2">
+                  <label className="text-xs text-gray-400 font-bold uppercase tracking-wider ml-1">Email</label>
+                  <input required name="email" value={formData.email} onChange={handleChange} type="email" placeholder="john@company.com" className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:bg-black/60 transition-all" />
+                </motion.div>
+              </div>
 
-            <div>
-              <label className="text-xs font-bold text-white uppercase tracking-wider mb-2 block">Name</label>
-              <input type="text" name="name" required className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 outline-none transition-colors" placeholder="John Doe" />
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-white uppercase tracking-wider mb-2 block">Email</label>
-              <input type="email" name="email" required className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 outline-none transition-colors" placeholder="john@example.com" />
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-white uppercase tracking-wider mb-2 block">Mobile Number</label>
-              <div className="flex gap-3 relative">
-                
-                {/* Dropdown */}
-                <div className="w-32 shrink-0 relative" ref={dropdownRef}>
-                  <button
-                    type="button"
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="w-full h-full bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white flex items-center justify-between hover:border-cyan-400 transition-all"
-                  >
-                    <span className="flex items-center gap-2 text-base">
-                      <span>{countryCode.flag}</span>
-                      <span className="text-sm font-bold text-gray-300">{countryCode.code}</span>
-                    </span>
-                    <FaChevronDown className={`text-[10px] text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  <AnimatePresence>
+              {/* Row 2: Mobile with Country Code */}
+              <motion.div variants={itemVariants} className="space-y-2">
+                <label className="text-xs text-gray-400 font-bold uppercase tracking-wider ml-1">Mobile Number</label>
+                <div className="flex gap-3 relative">
+                  <div className="w-32 shrink-0 relative" ref={dropdownRef}>
+                    <button type="button" onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="w-full h-full bg-black/40 border border-white/10 rounded-xl px-3 py-3 text-white flex items-center justify-between hover:border-purple-500 transition-all">
+                      <span className="flex items-center gap-2 text-sm">
+                        <span>{selectedCountry.flag}</span>
+                        <span className="font-bold">{selectedCountry.code}</span>
+                      </span>
+                      <FaChevronDown className="text-[10px] text-gray-500" />
+                    </button>
                     {isDropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="absolute top-full mt-2 left-0 w-[260px] bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 max-h-56 overflow-y-auto custom-scrollbar"
-                      >
+                      <div className="absolute top-full mt-2 left-0 w-64 bg-neutral-900 border border-white/10 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto custom-scrollbar">
                         {countryCodes.map((c) => (
-                          <button
-                            key={c.country}
-                            type="button"
-                            onClick={() => { setCountryCode(c); setIsDropdownOpen(false); }}
-                            className="w-full px-4 py-2.5 hover:bg-white/10 flex items-center gap-3 transition-colors border-b border-white/5 last:border-none group"
-                          >
-                            <span className="text-lg flex-shrink-0 w-6">{c.flag}</span>
-                            <span className="text-gray-400 font-mono text-xs w-10 text-left flex-shrink-0 group-hover:text-white transition-colors">{c.code}</span>
-                            <span className="text-gray-300 text-sm truncate flex-1 text-left group-hover:text-white transition-colors">{c.name}</span>
+                          <button key={c.country} type="button" onClick={() => { setSelectedCountry(c); setIsDropdownOpen(false); }} className="w-full px-4 py-3 hover:bg-white/10 flex items-center gap-3 text-left text-sm text-gray-300 border-b border-white/5 last:border-none">
+                            <span className="text-lg">{c.flag}</span> <span className="font-bold">{c.code}</span> <span className="text-xs text-gray-500 truncate">{c.country}</span>
                           </button>
                         ))}
-                      </motion.div>
+                      </div>
                     )}
-                  </AnimatePresence>
+                  </div>
+                  <input type="tel" name="mobile" required value={formData.mobile} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none" placeholder="98765 43210" />
                 </div>
+              </motion.div>
 
-                <input 
-                  type="tel" 
-                  name="mobile_number" 
-                  required 
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 outline-none transition-colors" 
-                  placeholder="98765 43210" 
-                />
-              </div>
-            </div>
+              {/* Row 3: Service Selection (Chips) */}
+              <motion.div variants={itemVariants} className="space-y-3">
+                <label className="text-xs text-gray-400 font-bold uppercase tracking-wider ml-1">What do you need?</label>
+                <div className="flex flex-wrap gap-2">
+                  {services.map((s) => (
+                    <motion.button 
+                      key={s} 
+                      type="button" 
+                      onClick={() => setFormData({ ...formData, service: s })} 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`px-4 py-2 rounded-full border text-xs font-bold transition-all ${formData.service === s ? 'bg-white text-black border-white' : 'bg-white/5 text-gray-400 border-white/10 hover:border-purple-500 hover:text-white'}`}
+                    >
+                      {formData.service === s && <FaCheck className="inline-block mr-2 text-[10px]" />}
+                      {s}
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.div>
 
-            <div>
-              <label className="text-xs font-bold text-white uppercase tracking-wider mb-2 block">Message</label>
-              <textarea name="message" rows={3} required className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 outline-none transition-colors resize-none" placeholder="Tell us about your project..." />
-            </div>
-            
-            <button 
-              type="submit" 
-              disabled={status === 'sending'}
-              className="w-full bg-white text-black py-3.5 rounded-xl font-bold text-base uppercase tracking-widest hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
-            >
-              {status === 'sending' ? 'Sending...' : <>Send Message <FaPaperPlane className="text-sm" /></>}
-            </button>
-            {status === 'error' && <p className="text-red-500 text-sm text-center">Something went wrong. Please try again.</p>}
-          </form>
-        )}
-      </motion.div>
+              {/* Row 4: Budget Selection (Chips) */}
+              <motion.div variants={itemVariants} className="space-y-3">
+                <label className="text-xs text-gray-400 font-bold uppercase tracking-wider ml-1">Project Budget</label>
+                <div className="flex flex-wrap gap-2">
+                  {budgets.map((b) => (
+                    <motion.button 
+                      key={b} 
+                      type="button" 
+                      onClick={() => setFormData({ ...formData, budget: b })} 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`px-4 py-2 rounded-full border text-xs font-bold transition-all ${formData.budget === b ? 'bg-white text-black border-white' : 'bg-white/5 text-gray-400 border-white/10 hover:border-purple-500 hover:text-white'}`}
+                    >
+                      {b}
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Row 5: Details */}
+              <motion.div variants={itemVariants} className="space-y-2">
+                <label className="text-xs text-gray-400 font-bold uppercase tracking-wider ml-1">Project Details</label>
+                <textarea required name="message" value={formData.message} onChange={handleChange} rows={4} placeholder="Tell us about your project goals and timeline..." className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:bg-black/60 transition-all resize-none custom-scrollbar"></textarea>
+              </motion.div>
+
+              <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
+              <motion.button 
+                variants={itemVariants}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit" 
+                disabled={status === 'submitting'}
+                className="w-full py-5 rounded-xl bg-white text-black font-bold text-lg hover:bg-purple-500 hover:text-white transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-purple-900/20"
+              >
+                {status === 'submitting' ? (
+                  <>Sending... <FaSpinner className="animate-spin" /></>
+                ) : (
+                  <>Send Message <FaPaperPlane /></>
+                )}
+              </motion.button>
+
+              {status === 'error' && (
+                <p className="text-red-500 text-center text-sm mt-2">Something went wrong. Please check your connection.</p>
+              )}
+
+            </motion.form>
+          </div>
+        </motion.div>
+
+      </div>
     </main>
   );
 }

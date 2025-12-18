@@ -1,10 +1,11 @@
 import Hero from "@/components/Hero";
-import Services from "@/components/Services"; // This is the 7 Services Grid
-import Process from "@/components/Process";   // This is the 6-Step Process
+import Services from "@/components/Services"; 
+import Process from "@/components/Process";   
 
 export default function Home() {
   return (
-    <main className="bg-black min-h-screen">
+    // Updated: Removed 'bg-black' to reveal the global gradient
+    <main className="min-h-screen">
       
       {/* 1. The Video Entry Section */}
       <Hero />

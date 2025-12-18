@@ -105,7 +105,6 @@ const CreativeCard = ({ title, desc, icon, span, color, bgPattern, index }: any)
       transition={{ duration: 0.6, delay: index * 0.1 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      // CHANGED: Increased height to min-h-[450px] and increased padding to p-10
       className={`relative group min-h-[450px] rounded-[2.5rem] bg-neutral-900 overflow-hidden border border-white/5 ${span}`}
     >
       
@@ -157,8 +156,13 @@ const CreativeCard = ({ title, desc, icon, span, color, bgPattern, index }: any)
 // === MAIN SECTION ===
 export default function Services() {
   return (
-    <section className="bg-black py-32 px-6">
-      <div className="max-w-[1400px] mx-auto">
+    <section className="bg-transparent py-32 px-6 relative">
+      
+      {/* === NEW CONNECTOR: Smooth Black-to-Transparent Fade === */}
+      {/* This ensures the video fades into pure black, then fades to the blue theme */}
+      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-black to-transparent z-0 pointer-events-none" />
+
+      <div className="max-w-[1400px] mx-auto relative z-10">
         
         <div className="text-center mb-32">
           <motion.h2 

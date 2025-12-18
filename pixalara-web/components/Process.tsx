@@ -54,7 +54,8 @@ export default function Process() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={containerRef} className="bg-black py-40 px-6 relative overflow-hidden">
+    // Updated: Changed bg-black to bg-transparent
+    <section ref={containerRef} className="bg-transparent py-40 px-6 relative overflow-hidden">
       
       {/* Background Line Track */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white/5" />

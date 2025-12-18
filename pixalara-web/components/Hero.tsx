@@ -2,11 +2,24 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaVolumeMute, FaVolumeUp, FaArrowRight } from 'react-icons/fa';
+import Link from 'next/link';
+
+// === ROTATING TEXT OPTIONS ===
+const rollingTexts = [
+  "Pixalara transforms businesses with cutting-edge web design.",
+  "Crafting immersive brand identities that stick.",
+  "Building scalable cloud systems for the future.",
+  "Designing award-winning, motion-first interfaces.",
+  "Accelerating your digital growth with robust code."
+];
 
 export default function Hero() {
   const [hasEntered, setHasEntered] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  
+  // New State for Rolling Text
+  const [textIndex, setTextIndex] = useState(0);
 
   // 1. Lock scrolling when the site loads
   useEffect(() => {
@@ -16,6 +29,14 @@ export default function Hero() {
       document.body.style.overflow = 'unset'; // Enable scrolling after entry
     }
   }, [hasEntered]);
+
+  // 2. Auto-rotate text every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % rollingTexts.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleEnter = () => {
     setHasEntered(true);
@@ -35,7 +56,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
+    <section className="relative w-full h-screen overflow-hidden bg-transparent flex items-center justify-center">
       
       {/* === 1. PREMIUM ENTRY OVERLAY (FIXED POSITION) === */}
       <AnimatePresence>
@@ -44,8 +65,6 @@ export default function Hero() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            // CHANGED: 'fixed' instead of 'absolute' covers the whole window
-            // CHANGED: 'z-[9999]' ensures it is on top of EVERYTHING
             className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center cursor-pointer"
             onClick={handleEnter}
           >
@@ -56,14 +75,13 @@ export default function Hero() {
               className="text-center"
             >
               <h1 className="text-6xl md:text-8xl font-extrabold mb-2 tracking-tighter">
-  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
-    PIXALARA
-  </span>
-</h1>
-{/* Optional: Add your slogan below the title */}
-<p className="text-gray-300 text-lg tracking-widest uppercase mb-8">
-  Your Vision, Our Creation.
-</p>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
+                  PIXALARA
+                </span>
+              </h1>
+              <p className="text-gray-300 text-lg tracking-widest uppercase mb-8">
+                Your Vision, Our Creation.
+              </p>
               <p className="text-gray-400 text-sm tracking-[0.3em] uppercase mb-8">
                 Digital Experience Agency
               </p>
@@ -87,7 +105,7 @@ export default function Hero() {
         <video 
           ref={videoRef}
           loop 
-          muted={false}
+          muted={false} // Initially handled by handleEnter
           playsInline 
           className="w-full h-full object-cover opacity-60"
         >
@@ -111,25 +129,33 @@ export default function Hero() {
               </span>
             </motion.h1>
 
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 1 }}
-              className="text-xl text-gray-300 max-w-2xl mx-auto mb-10"
-            >
-              Pixalara transforms businesses with cutting-edge web design, branding, and motion-first development.
-            </motion.p>
+            {/* === ROLLING TEXT EFFECT (REPLACES STATIC PARAGRAPH) === */}
+            <div className="h-20 md:h-24 overflow-hidden relative mb-8 flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.p 
+                  key={textIndex}
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -30, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto absolute w-full font-medium"
+                >
+                  {rollingTexts[textIndex]}
+                </motion.p>
+              </AnimatePresence>
+            </div>
 
-            <motion.button
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-red-600 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-red-700 transition-all shadow-lg shadow-red-600/30"
             >
-              Get Started
-            </motion.button>
+               <Link href="/contact">
+                <button className="bg-red-600 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-red-700 transition-all shadow-lg shadow-red-600/30">
+                  Get Started
+                </button>
+               </Link>
+            </motion.div>
           </div>
 
           <motion.button 
