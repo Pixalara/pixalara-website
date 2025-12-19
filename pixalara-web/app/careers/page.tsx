@@ -70,7 +70,7 @@ const countryCodes = [
   { code: "+", country: "OT", flag: "🌐" },
 ];
 
-// === PREMIUM ANIMATIONS (FIXED WITH ': Variants') ===
+// === PREMIUM ANIMATIONS (Types Fixed) ===
 const containerVariants: Variants = { 
   hidden: { opacity: 0 }, 
   visible: { 
