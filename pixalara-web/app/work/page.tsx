@@ -1,15 +1,16 @@
 'use client';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaExternalLinkAlt } from 'react-icons/fa';
+import Link from 'next/link'; // <--- Added this missing import
 
-// === PROJECT DATA (You can change these later) ===
+// === PROJECT DATA ===
 const projects = [
   {
     id: 1,
     title: "Neon Fintech",
     category: "App Development",
     desc: "A next-gen banking interface built for the crypto-native generation. Features real-time visualization and biometric security.",
-    gradient: "from-blue-600 to-cyan-400", // Placeholder for image
+    gradient: "from-blue-600 to-cyan-400", 
   },
   {
     id: 2,
@@ -36,7 +37,7 @@ const projects = [
 
 export default function WorkPage() {
   return (
-    // NO bg-black here -> Global Gradient shows through
+    // Transparent background so global blue gradient shows
     <main className="min-h-screen pt-40 pb-20 px-6">
       
       {/* === HEADER === */}
@@ -48,17 +49,29 @@ export default function WorkPage() {
         >
           Selected Works
         </motion.p>
+        
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-5xl md:text-8xl font-bold text-white tracking-tighter"
+          className="text-5xl md:text-8xl font-bold text-white tracking-tighter leading-tight mb-8"
         >
           MADE BY <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
+          {/* UPDATED: Gradient matches Logo (Cyan -> Purple -> Pink) */}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
             PIXALARA.
           </span>
         </motion.h1>
+
+        {/* UPDATED: Energetic Description */}
+        <motion.p 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-xl md:text-2xl text-gray-400 max-w-3xl leading-relaxed"
+        >
+          We don't just build websites. We engineer <span className="text-white font-bold">digital breakthroughs.</span> From immersive 3D worlds to high-frequency fintech dashboards, this is where code meets art.
+        </motion.p>
       </div>
 
       {/* === PROJECTS GRID === */}
@@ -73,7 +86,6 @@ export default function WorkPage() {
             className="group cursor-pointer"
           >
             {/* Project Card / Image Placeholder */}
-            {/* Using a Gradient Div instead of Image for now so it doesn't break */}
             <div className={`w-full h-[400px] md:h-[500px] rounded-[2rem] bg-gradient-to-br ${project.gradient} relative overflow-hidden mb-8 border border-white/10 group-hover:shadow-[0_0_50px_rgba(255,255,255,0.1)] transition-all duration-500`}>
               
               {/* Overlay on Hover */}
@@ -103,9 +115,11 @@ export default function WorkPage() {
       {/* === BOTTOM CTA === */}
       <div className="mt-40 text-center">
         <h2 className="text-3xl text-white mb-8">Have a project in mind?</h2>
-        <button className="border border-white/20 text-white px-10 py-4 rounded-full hover:bg-white hover:text-black transition-all font-bold tracking-widest uppercase">
-          Let's Build It
-        </button>
+        <Link href="/contact">
+          <button className="border border-white/20 text-white px-10 py-4 rounded-full hover:bg-white hover:text-black transition-all font-bold tracking-widest uppercase">
+            Let's Build It
+          </button>
+        </Link>
       </div>
 
     </main>

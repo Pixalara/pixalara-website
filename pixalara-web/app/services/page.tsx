@@ -103,7 +103,8 @@ export default function ServicesPage() {
           </p>
           <h1 className="relative z-10 text-5xl md:text-8xl font-bold text-white mb-6 tracking-tighter">
             Digital Experiences.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+            {/* UPDATED: Gradient matches Logo (Cyan -> Purple -> Pink) */}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
               Engineered to Scale.
             </span>
           </h1>

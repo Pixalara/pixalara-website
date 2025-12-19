@@ -100,7 +100,8 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="min-h-screen pt-32 pb-20 px-6 overflow-hidden">
+    // FIXED: Reduced padding from pt-32 to pt-24 to close the gap
+    <main className="min-h-screen pt-24 pb-20 px-6 overflow-hidden">
       
       {/* Background Decor */}
       <div className="fixed top-0 left-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
@@ -113,14 +114,15 @@ export default function ContactPage() {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="lg:sticky lg:top-40"
+          className="lg:sticky lg:top-32" 
         >
           <span className="inline-block py-1 px-3 rounded-full bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold tracking-widest uppercase mb-6">
             Get In Touch
           </span>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter leading-[1.1]">
             Let's Build <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+            {/* FIXED: Updated Gradient to match Careers Page (Cyan -> Purple -> Pink) */}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
               Something Great.
             </span>
           </h1>
