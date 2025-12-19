@@ -38,7 +38,7 @@ const projects = [
 export default function WorkPage() {
   return (
     // Transparent background so global blue gradient shows
-    <main className="min-h-screen pt-40 pb-20 px-6">
+    <main className="min-h-screen pt-24 pb-20 px-6">
       
       {/* === HEADER === */}
       <div className="max-w-7xl mx-auto mb-32 text-center md:text-left">

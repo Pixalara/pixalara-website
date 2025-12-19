@@ -189,7 +189,7 @@ export default function ServicesPage() {
       </div>
 
       {/* 3. TECHNOLOGY STACK */}
-      <section className="mt-40 pt-20 border-t border-white/5 relative overflow-hidden">
+      <section className="mt-40 pt-24 border-t border-white/5 relative overflow-hidden">
         <div className="text-center mb-16 relative z-10 px-6">
            <p className="text-cyan-400 font-bold uppercase tracking-widest text-xs mb-4">Our Arsenal</p>
            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">

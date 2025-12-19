@@ -5,7 +5,7 @@ import { FaBolt, FaShieldAlt, FaRocket, FaCode } from 'react-icons/fa';
 export default function AboutPage() {
   return (
     // Transparent background so the Global Gradient shows through
-    <main className="min-h-screen pt-40 pb-20 px-6">
+    <main className="min-h-screen pt-24 pb-20 px-6">
       
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         

@@ -171,7 +171,7 @@ export default function CareersPage() {
   }
 
   return (
-    <main className="min-h-screen pt-40 px-6 pb-20 overflow-hidden">
+    <main className="min-h-screen pt-24 px-6 pb-20 overflow-hidden">
       
       {/* Background Glows */}
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
