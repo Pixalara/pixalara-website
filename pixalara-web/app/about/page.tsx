@@ -32,18 +32,18 @@ export default function AboutPage() {
             Pixalara builds world-class digital experiences that are <span className="text-purple-400">engineered to scale.</span>
           </h2>
           
-          <p className="text-lg text-gray-400 leading-relaxed mb-8">
-            We design, build, host, secure, and manage high-performance websites, applications, and cloud-native systems for modern brands. We don't just write code; we architect infrastructure that handles millions of users without blinking.
-          </p>
-
-          <div className="flex gap-6">
-            <button className="px-8 py-4 bg-white text-black rounded-full font-bold hover:bg-gray-200 transition-colors">
-              Our Story
-            </button>
-            <button className="px-8 py-4 border border-white/20 text-white rounded-full font-bold hover:bg-white/10 transition-colors">
-              View Stats
-            </button>
+          {/* UPDATED DESCRIPTION */}
+          <div className="text-lg text-gray-400 leading-relaxed mb-8 space-y-6">
+            <p>
+              Pixalara is a digital-first technology studio specializing in high-performance web platforms, scalable applications, and cloud-native infrastructure.
+            </p>
+            <p>
+              We partner with ambitious brands to design, engineer, and operate systems that are fast, secure, and built to scale — from launch to long-term growth.
+            </p>
           </div>
+
+          {/* REMOVED CTA BUTTONS HERE */}
+          
         </motion.div>
 
         {/* === RIGHT SIDE: TECH CARDS (Velocity Core) === */}
