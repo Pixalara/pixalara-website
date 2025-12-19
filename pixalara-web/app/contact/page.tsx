@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { 
   FaEnvelope, FaMapMarkerAlt, FaPaperPlane, 
@@ -18,8 +18,8 @@ const countryCodes = [
   { code: "+", country: "OT", flag: "🌐" },
 ];
 
-// === ANIMATION VARIANTS ===
-const containerVariants = {
+// === ANIMATION VARIANTS (Fixed Types) ===
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1, 
@@ -27,7 +27,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 
