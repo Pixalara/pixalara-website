@@ -1,15 +1,43 @@
 'use client';
 import { motion } from 'framer-motion';
-import { FaBolt, FaShieldAlt, FaRocket, FaCode } from 'react-icons/fa';
+import { FaBolt, FaShieldAlt, FaRocket } from 'react-icons/fa';
+
+// === DATA: WHY CHOOSE PIXALARA ===
+const reasons = [
+  {
+    title: "End-to-End IT Ownership",
+    desc: "From domain configuration to cloud-native application design, development, and deployment, we manage your entire digital foundation — so you can stay focused on growth."
+  },
+  {
+    title: "Built to Scale on AWS",
+    desc: "We design scalable AWS architectures and implement modern DevOps practices to keep your applications fast, secure, and reliable as traffic grows."
+  },
+  {
+    title: "Always-On Reliability",
+    desc: "High availability, proactive monitoring, and rapid response ensure your systems stay online and perform when it matters most."
+  },
+  {
+    title: "Grow Your Brand Digitally",
+    desc: "We build visibility, authority, and demand through data-driven digital marketing — turning traffic into leads and leads into customers."
+  },
+  {
+    title: "Growth, Not Just Delivery",
+    desc: "We don’t disappear after launch. We partner with you long-term to evolve, optimize, and scale continuously."
+  },
+  {
+    title: "One Partner. One Process.",
+    desc: "Everything is delivered under one roof — transparent, structured, and engineered for measurable business outcomes."
+  }
+];
 
 export default function AboutPage() {
   return (
-    // Transparent background so the Global Gradient shows through
-    <main className="min-h-screen pt-24 pb-20 px-6">
+    <main className="min-h-screen pt-24 pb-0 px-6 relative overflow-hidden">
       
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* 1. HERO SECTION (Who We Are) */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10 mb-32">
         
-        {/* === LEFT SIDE: TEXT CONTENT === */}
+        {/* LEFT: TEXT */}
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -32,7 +60,6 @@ export default function AboutPage() {
             Pixalara builds world-class digital experiences that are <span className="text-purple-400">engineered to scale.</span>
           </h2>
           
-          {/* UPDATED DESCRIPTION */}
           <div className="text-lg text-gray-400 leading-relaxed mb-8 space-y-6">
             <p>
               Pixalara is a digital-first technology studio specializing in high-performance web platforms, scalable applications, and cloud-native infrastructure.
@@ -41,15 +68,12 @@ export default function AboutPage() {
               We partner with ambitious brands to design, engineer, and operate systems that are fast, secure, and built to scale — from launch to long-term growth.
             </p>
           </div>
-
-          {/* REMOVED CTA BUTTONS HERE */}
-          
         </motion.div>
 
-        {/* === RIGHT SIDE: TECH CARDS (Velocity Core) === */}
+        {/* RIGHT: TECH CARDS */}
         <div className="space-y-6">
           
-          {/* Card 1: Velocity Core */}
+          {/* Velocity Core */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -68,7 +92,7 @@ export default function AboutPage() {
             <p className="text-gray-400 text-sm">Sub-millisecond load times via global edge computing and static generation.</p>
           </motion.div>
 
-          {/* Card 2: Secure Core */}
+          {/* Secure Core */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,7 +111,7 @@ export default function AboutPage() {
             <p className="text-gray-400 text-sm">Enterprise-grade firewalls, DDoS protection, and automated threat detection.</p>
           </motion.div>
 
-          {/* Card 3: Scalable Architecture */}
+          {/* Infinite Scale */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -105,10 +129,57 @@ export default function AboutPage() {
             <h3 className="text-xl font-bold text-white mb-2">Infinite Scale</h3>
             <p className="text-gray-400 text-sm">Architecture that grows automatically from 10 to 10 million users.</p>
           </motion.div>
-
         </div>
-
       </div>
+
+      {/* 2. WHY CHOOSE PIXALARA (NEW SECTION) */}
+      <section className="relative z-10 max-w-7xl mx-auto mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          {/* UPDATED: Applied brand gradient to "Pixalara" */}
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">Pixalara</span>
+          </h2>
+          <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" />
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {reasons.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
+            >
+              <h3 className="text-xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
+                {item.title}
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                {item.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* === PREMIUM BLENDING EFFECT === */}
+      <div className="h-10" />
+
+      {/* Glow and Gradient Container */}
+      <div className="relative w-full h-20">
+        {/* Atmospheric Glow connecting to the Footer */}
+        <div className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-purple-900/20 blur-[120px] pointer-events-none z-0" />
+        
+        {/* Soft Gradient Fade at the very bottom to blend into black */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10" />
+      </div>
+
     </main>
   );
 }

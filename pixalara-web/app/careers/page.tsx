@@ -16,7 +16,7 @@ const jobs = [
     dept: "Engineering",
     type: "Full-Time",
     location: "Remote",
-    description: "Lead our engineering initiatives using the bleeding-edge stack: Next.js 15, React Server Components, TypeScript, Node.js, and AWS Serverless. You will architect scalable systems, manage database migrations, and mentor junior developers."
+    description: "Lead engineering initiatives using Next.js, React, TypeScript, Node.js, Python, PHP, and AWS. Build scalable web applications, design APIs, manage databases, and deploy cloud-ready solutions for real client projects while mentoring junior developers."
   },
   {
     id: 2,
@@ -32,7 +32,8 @@ const jobs = [
     dept: "Engineering",
     type: "Full-Time",
     location: "Remote",
-    description: "We need a infrastructure wizard to manage our AWS/GCP cloud environments. Handling CI/CD pipelines, Docker, and Kubernetes orchestration."
+    // UPDATED DESCRIPTION: Added advanced tech stack requirements
+    description: "We need an infrastructure wizard with advanced expertise in GitHub Actions, Docker, K8s, Grafana, and Prometheus. You will architect and manage our cloud infrastructure using the full AWS suite and Google Cloud GKE."
   },
   {
     id: 5,
@@ -41,17 +42,57 @@ const jobs = [
     type: "Internship",
     location: "Remote",
     description: "This position is for students who are very passionate about web technologies and design. You will work alongside senior engineers on live projects, learning Next.js, TypeScript, and modern UI patterns."
+  },
+  {
+    id: 6,
+    role: "Cloud Engineer Intern",
+    dept: "Engineering",
+    type: "Internship",
+    location: "Remote",
+    description: "Master core AWS services and Google Cloud. You will coordinate with the DevOps and Development teams to fulfill infrastructure requirements while implementing strategies for cloud cost optimization."
+  },
+  {
+    id: 7,
+    role: "DevOps Engineer Intern",
+    dept: "Engineering",
+    type: "Internship",
+    location: "Remote",
+    description: "Apply your expertise in GitHub Actions CI/CD, Docker, Kubernetes, Grafana, and Prometheus. You will work with AWS (IAM, EC2, VPC, RDS, S3, EKS) and Google Cloud GKE to build and monitor scalable infrastructure."
   }
 ];
 
 // === 2. PERKS DATA ===
 const perks = [
-  { icon: <FaLaptop />, title: "Remote First", desc: "Work from anywhere. We focus on shipping code, not counting hours." },
-  { icon: <FaMoneyBillWave />, title: "Top-Tier Pay", desc: "Competitive salaries, equity options, and performance bonuses." },
-  { icon: <FaComments />, title: "Communication", desc: "We keep our entire team up-to-date through regular meetings and one-on-ones." },
-  { icon: <FaShapes />, title: "Building Skill Sets", desc: "Work on diverse assignments giving you opportunities to level up your skills." },
-  { icon: <FaChartLine />, title: "Long-Term Growth", desc: "We hire the best to give them long-term careers and create future superstars." },
-  { icon: <FaUsers />, title: "Diversity & Inclusion", desc: "We are a committed equal opportunity employer and do not discriminate." }
+  { 
+    icon: <FaLaptop />, 
+    title: "Remote First", 
+    desc: "Work from anywhere. We focus on shipping code, not counting hours." 
+  },
+  { 
+    icon: <FaMoneyBillWave />, 
+    title: "Performance-Based Rewards", 
+    desc: "We reward impact and outcomes. High performers grow faster with regular reviews, performance bonuses." 
+  },
+  { 
+    icon: <FaComments />, 
+    title: "Communication", 
+    desc: "We keep our entire team up-to-date through regular meetings and one-on-ones." 
+  },
+  { 
+    icon: <FaShapes />, 
+    title: "Building Skill Sets", 
+    desc: "Work on diverse assignments giving you opportunities to level up your skills." 
+  },
+  { 
+    icon: <FaChartLine />, 
+    title: "Long-Term Growth", 
+    desc: "We hire the best to give them long-term careers and create future superstars." 
+  },
+  { 
+    icon: <FaUsers />, 
+    title: "Diversity & Inclusion", 
+    desc: "We are a committed equal opportunity employer and do not discriminate." 
+  }
 ];
 
 // === 3. COUNTRY CODES ===
@@ -70,7 +111,7 @@ const countryCodes = [
   { code: "+", country: "OT", flag: "🌐" },
 ];
 
-// === PREMIUM ANIMATIONS (Types Fixed) ===
+// === PREMIUM ANIMATIONS ===
 const containerVariants: Variants = { 
   hidden: { opacity: 0 }, 
   visible: { 
@@ -204,7 +245,10 @@ export default function CareersPage() {
       {/* 2. PERKS - WITH MAGNETIC HOVER */}
       <section className="max-w-7xl mx-auto mb-32 relative z-10">
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Why Pixalara?</h2>
+          {/* UPDATED: Applied signature gradient to Pixalara */}
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Why <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">Pixalara</span>?
+          </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />
         </div>
         <motion.div 
