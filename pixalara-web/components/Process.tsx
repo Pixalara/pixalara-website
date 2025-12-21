@@ -57,13 +57,11 @@ export default function Process() {
     offset: ["start end", "end end"]
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  // Line height logic
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "90%"]);
 
   return (
-    <section ref={containerRef} className="bg-transparent py-40 px-6 relative overflow-hidden">
-      
-      {/* Background Line Track */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white/5" />
+    <section ref={containerRef} className="bg-transparent pt-0 pb-40 px-6 relative overflow-hidden">
       
       {/* Header */}
       <div className="text-center mb-40 relative z-10">
@@ -81,13 +79,17 @@ export default function Process() {
 
       <div className="max-w-[1200px] mx-auto relative">
         
-        {/* THE GLOWING LASER LINE */}
+        {/* === Background Line Track === */}
+        {/* Aligned to left-[36px] */}
+        <div className="absolute top-0 left-[36px] md:left-1/2 -translate-x-1/2 w-[2px] h-[95%] bg-gradient-to-b from-white/10 to-transparent" />
+        
+        {/* === THE GLOWING LASER LINE === */}
         <motion.div 
           style={{ height: lineHeight }}
-          className="absolute left-[28px] md:left-1/2 top-0 w-[4px] -ml-[2px] bg-gradient-to-b from-red-600 via-purple-600 to-blue-600 shadow-[0_0_30px_rgba(220,38,38,1)] z-0 rounded-full"
+          className="absolute left-[36px] md:left-1/2 top-0 w-[4px] -ml-[2px] bg-gradient-to-b from-red-600 via-purple-600 to-blue-600 shadow-[0_0_30px_rgba(220,38,38,1)] z-0 rounded-full"
         />
 
-        <div className="space-y-32">
+        <div className="space-y-12">
           {steps.map((step, index) => (
             <div key={step.id} className={`relative flex items-center md:justify-between ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
               
@@ -95,7 +97,7 @@ export default function Process() {
               <div className="hidden md:block w-5/12" />
 
               {/* CENTRAL ICON NODE */}
-              <div className="absolute left-[8px] md:left-1/2 md:-translate-x-1/2 z-10 flex items-center justify-center">
+              <div className="absolute left-[8px] md:left-1/2 md:-translate-x-1/2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
                 <motion.div 
                   initial={{ scale: 0, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
@@ -113,19 +115,21 @@ export default function Process() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ margin: "-20% 0px -20% 0px" }}
                 transition={{ duration: 0.6 }}
-                // Increased Padding and Width
-                className="ml-24 md:ml-0 w-full md:w-5/12 p-10 rounded-[2rem] bg-white/5 border border-white/10 hover:border-red-600/50 hover:bg-white/10 transition-colors group"
+                // UPDATED: Reduced margin to ml-20 (was ml-24) to give more width to content
+                className="ml-20 md:ml-0 flex-1 md:flex-none min-w-0 md:w-5/12 p-8 md:p-10 rounded-[2rem] bg-white/5 border border-white/10 hover:border-red-600/50 hover:bg-white/10 transition-colors group"
               >
-                {/* Bigger Icon */}
-                <div className="text-5xl mb-6 text-gray-500 group-hover:text-red-500 transition-colors">
+                {/* Icon */}
+                <div className="text-4xl md:text-5xl mb-6 text-gray-500 group-hover:text-red-500 transition-colors">
                   {step.icon}
                 </div>
                 
-                {/* Bigger Title */}
-                <h3 className="text-4xl font-bold text-white mb-4 tracking-tight">{step.title}</h3>
+                {/* Title: Reduced to text-2xl on mobile to fit long words like 'Optimization' */}
+                <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight break-words">
+                  {step.title}
+                </h3>
                 
-                {/* Bigger Description */}
-                <p className="text-gray-300 text-lg leading-relaxed">
+                {/* Description */}
+                <p className="text-gray-300 text-base md:text-lg leading-relaxed">
                   {step.desc}
                 </p>
               </motion.div>

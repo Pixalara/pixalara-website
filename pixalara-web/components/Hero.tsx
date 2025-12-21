@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaVolumeMute, FaVolumeUp, FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link';
 
-// === ROTATING TEXT OPTIONS (UPDATED) ===
+// === ROTATING TEXT OPTIONS ===
 const rollingTexts = [
   "We engineer high-performance digital experiences that scale.",
   "Designing and building websites that convert and grow businesses.",
@@ -19,8 +19,6 @@ export default function Hero() {
   const [hasEntered, setHasEntered] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  
-  // New State for Rolling Text
   const [textIndex, setTextIndex] = useState(0);
 
   // 1. Lock scrolling when the site loads
@@ -60,40 +58,68 @@ export default function Hero() {
   return (
     <section className="relative w-full h-screen overflow-hidden bg-transparent flex items-center justify-center">
       
-      {/* === 1. PREMIUM ENTRY OVERLAY (FIXED POSITION) === */}
+      {/* === 1. PREMIUM ENTRY OVERLAY (IMPROVED) === */}
       <AnimatePresence>
         {!hasEntered && (
           <motion.div 
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center cursor-pointer"
+            exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center cursor-pointer overflow-hidden"
             onClick={handleEnter}
           >
+            {/* Atmospheric Background Glow */}
+            <motion.div 
+              animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.2, 1] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"
+            />
+
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="text-center"
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="text-center relative z-10 px-6"
             >
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 tracking-tighter">
+              {/* Massive Brand Name */}
+              <h1 className="text-6xl md:text-9xl font-black mb-6 tracking-tighter">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
                   PIXALARA
                 </span>
               </h1>
-              <p className="text-gray-300 text-lg tracking-widest uppercase mb-8">
-                Your Vision, Our Creation.
-              </p>
-              <p className="text-gray-400 text-sm tracking-[0.3em] uppercase mb-8">
-                Digital Experience Agency
-              </p>
+
+              {/* New Creative Tagline */}
+              <div className="space-y-2 mb-16">
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.8 }}
+                  className="text-2xl md:text-4xl text-white font-light tracking-tight"
+                >
+                  Digital Experiences.
+                </motion.p>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.8 }}
+                  className="text-2xl md:text-4xl text-gray-500 font-bold tracking-tight"
+                >
+                  Engineered to <span className="text-white">Scale.</span>
+                </motion.p>
+              </div>
               
-              <button 
-                className="group flex items-center gap-3 mx-auto border border-white/20 px-8 py-3 text-white rounded-full hover:bg-white hover:text-black transition-all duration-300"
+              {/* Refined Enter Button */}
+              <motion.button 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+                className="group relative inline-flex items-center gap-4 px-10 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-cyan-500/50 transition-all duration-500"
               >
-                <span className="text-sm font-bold tracking-widest uppercase">Enter Site</span>
-                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </button>
+                <span className="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-gray-300 group-hover:text-white transition-colors">
+                  Enter Site
+                </span>
+                <FaArrowRight className="text-gray-500 group-hover:translate-x-1 group-hover:text-cyan-400 transition-all duration-300" />
+              </motion.button>
             </motion.div>
           </motion.div>
         )}
@@ -107,7 +133,7 @@ export default function Hero() {
         <video 
           ref={videoRef}
           loop 
-          muted={false} // Initially handled by handleEnter
+          muted={false} 
           playsInline 
           className="w-full h-full object-cover opacity-60"
         >
@@ -131,7 +157,7 @@ export default function Hero() {
               </span>
             </motion.h1>
 
-            {/* === ROLLING TEXT EFFECT === */}
+            {/* Rolling Text */}
             <div className="h-20 md:h-24 overflow-hidden relative mb-8 flex items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.p 
