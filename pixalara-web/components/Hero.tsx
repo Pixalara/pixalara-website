@@ -31,24 +31,20 @@ export default function Hero() {
     setIsLoading(false);
   }, []);
 
-  // 2. FORCE VOLUME & PLAY ON ENTRY (THE FIX)
-  // We use useEffect here to ensure this runs AFTER the state update
+  // 2. HANDLE "REVISIT" AUTOPLAY (Session Storage Case)
   useEffect(() => {
     if (hasEntered && videoRef.current) {
       const video = videoRef.current;
-      
-      // Force volume to 50%
-      video.volume = 0.5; 
-      
-      // Unmute and Play
+      // Ensure volume is set for revisiting users too
+      video.volume = 0.5;
       video.muted = false;
-      video.play().catch(error => {
-        console.log("Autoplay prevented:", error);
+      video.play().catch(() => {
+        // Silent catch for autoplay restrictions on reload
       });
     }
   }, [hasEntered]);
 
-  // 3. Lock scrolling only if NOT entered and NOT loading
+  // 3. Lock scrolling
   useEffect(() => {
     if (!hasEntered && !isLoading) {
       document.body.style.overflow = 'hidden';
@@ -65,10 +61,20 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  // === THE FIX: IMMEDIATE PLAY & VOLUME ===
   const handleEnter = () => {
+    // 1. Trigger Video IMMEDIATELY (No Delay)
+    if (videoRef.current) {
+      videoRef.current.muted = false; // Unmute
+      videoRef.current.volume = 0.5;  // Set 50% Volume
+      videoRef.current.play().catch(error => {
+        console.log("Play prevented:", error);
+      });
+    }
+
+    // 2. Update State
     setHasEntered(true);
     sessionStorage.setItem('hasEnteredSite', 'true');
-    // The useEffect above ^^^ will handle the playing and volume now.
   };
 
   const toggleAudio = () => {
@@ -155,12 +161,13 @@ export default function Hero() {
         <video 
           ref={videoRef}
           loop 
-          // Control muted state via React State, but initally handle playback via useEffect
-          muted={!hasEntered || isMuted} 
           playsInline 
+          // UPDATED: We removed 'autoPlay' prop to avoid conflicts.
+          // UPDATED: 'muted' is strictly controlled by our mute button state, 
+          // but we manually set it to false in handleEnter.
+          muted={!hasEntered || isMuted}
           className="w-full h-full object-cover opacity-60"
         >
-          {/* Ensure file exists in public/videos/ */}
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
       </div>
