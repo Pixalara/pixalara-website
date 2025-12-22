@@ -17,21 +17,17 @@ const rollingTexts = [
 
 export default function Hero() {
   const [hasEntered, setHasEntered] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // New loading state to prevent flash
+  const [isLoading, setIsLoading] = useState(true); 
   const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [textIndex, setTextIndex] = useState(0);
 
   // 1. CHECK SESSION STORAGE ON MOUNT
   useEffect(() => {
-    // Check if user has already entered in this session
     const visited = sessionStorage.getItem('hasEnteredSite');
-    
     if (visited) {
       setHasEntered(true);
     }
-    
-    // Slight delay to ensure hydration is complete before showing overlay
     setIsLoading(false);
   }, []);
 
@@ -58,7 +54,8 @@ export default function Hero() {
     sessionStorage.setItem('hasEnteredSite', 'true');
     
     if (videoRef.current) {
-      videoRef.current.muted = false;
+      videoRef.current.muted = false; // Unmute
+      videoRef.current.volume = 0.5;  // <--- SET VOLUME TO 50% HERE
       videoRef.current.play().catch(error => {
         console.log("Autoplay prevented:", error);
       });
@@ -72,7 +69,6 @@ export default function Hero() {
     }
   };
 
-  // Don't render anything until we've checked storage to prevent flashing
   if (isLoading) return null;
 
   return (
@@ -147,20 +143,20 @@ export default function Hero() {
       
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />
-        {/* Only play/load video if entered to save resources, or keep muted background */}
         <video 
           ref={videoRef}
           loop 
           muted={!hasEntered || isMuted} 
-          autoPlay={hasEntered} // AutoPlay only if entered
+          autoPlay={hasEntered} 
           playsInline 
           className="w-full h-full object-cover opacity-60"
         >
+          {/* Ensure file exists in public/videos/ */}
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
       </div>
 
-      {/* Main Text Content (Only renders after entering) */}
+      {/* Main Text Content */}
       {hasEntered && (
         <>
           <div className="relative z-20 text-center px-4 max-w-5xl">
