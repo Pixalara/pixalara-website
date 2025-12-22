@@ -34,7 +34,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen pt-24 pb-0 px-6 relative overflow-hidden">
       
-      {/* 1. HERO SECTION (Who We Are) */}
+      {/* 1. HERO SECTION */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10 mb-32">
         
         {/* LEFT: TEXT */}
@@ -44,8 +44,9 @@ export default function AboutPage() {
           transition={{ duration: 0.8 }}
         >
           <div className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-8">
+            {/* UPDATED: Changed from "Who We Are" to "Why Pixalara" */}
             <span className="text-cyan-400 font-bold tracking-widest uppercase text-sm">
-              Who We Are
+              Why Pixalara
             </span>
           </div>
           
@@ -132,7 +133,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* 2. WHY CHOOSE PIXALARA (NEW SECTION) */}
+      {/* 2. WHY CHOOSE PIXALARA */}
       <section className="relative z-10 max-w-7xl mx-auto mb-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -140,7 +141,6 @@ export default function AboutPage() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          {/* UPDATED: Applied brand gradient to "Pixalara" */}
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">Pixalara</span>
           </h2>
@@ -173,10 +173,7 @@ export default function AboutPage() {
 
       {/* Glow and Gradient Container */}
       <div className="relative w-full h-20">
-        {/* Atmospheric Glow connecting to the Footer */}
         <div className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-purple-900/20 blur-[120px] pointer-events-none z-0" />
-        
-        {/* Soft Gradient Fade at the very bottom to blend into black */}
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10" />
       </div>
 

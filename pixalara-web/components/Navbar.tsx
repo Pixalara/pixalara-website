@@ -23,7 +23,8 @@ export default function Navbar() {
   const navLinks = [
     { name: "OUR WORK", href: "/work" },
     { name: "WHAT WE DO", href: "/services" },
-    { name: "ABOUT", href: "/about" }, 
+    // UPDATED: Renamed "ABOUT" to "WHY PIXALARA"
+    { name: "WHY PIXALARA", href: "/about" }, 
     { name: "CAREERS", href: "/careers" },
     { name: "LET'S TALK", href: "/contact" },
   ];

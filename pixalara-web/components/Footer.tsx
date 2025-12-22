@@ -132,14 +132,19 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Column 2: Quick Links */}
+        {/* Column 2: Quick Links (REORDERED & RENAMED) */}
         <div>
           <h4 className="text-white font-bold mb-6">Company</h4>
           <ul className="space-y-4 text-sm text-gray-500">
-            <li><Link href="/about" className="hover:text-cyan-400 transition-colors">About Us</Link></li>
+            {/* 1. Our Work */}
             <li><Link href="/work" className="hover:text-cyan-400 transition-colors">Our Work</Link></li>
+            {/* 2. What We Do */}
             <li><Link href="/services" className="hover:text-cyan-400 transition-colors">What We Do</Link></li>
+            {/* 3. Why Pixalara (Renamed from About Us) */}
+            <li><Link href="/about" className="hover:text-cyan-400 transition-colors">Why Pixalara</Link></li>
+            {/* 4. Careers */}
             <li><Link href="/careers" className="hover:text-cyan-400 transition-colors">Careers</Link></li>
+            {/* 5. Contact */}
             <li><Link href="/contact" className="hover:text-cyan-400 transition-colors">Contact</Link></li>
           </ul>
         </div>

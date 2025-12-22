@@ -138,13 +138,14 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
 
       {/* Project Info */}
       <div className="flex justify-between items-start px-2 group-hover:translate-x-2 transition-transform duration-300">
-        <div>
-          <h3 className="text-lg md:text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">
+        <div className="flex-1 pr-6">
+          <h3 className="text-xl md:text-2xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">
             {project.title}
           </h3>
-          <p className="text-gray-400 text-sm max-w-md leading-relaxed">{project.desc}</p>
+          <p className="text-gray-300 text-base md:text-lg leading-relaxed font-light">{project.desc}</p>
         </div>
-        <span className={`hidden md:block text-xs font-bold border px-3 py-1.5 rounded-full uppercase tracking-widest ${project.status === 'wip' ? 'text-gray-500 border-white/10' : 'text-white border-white/30'}`}>
+        
+        <span className={`hidden md:block text-sm font-bold border px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap ${project.status === 'wip' ? 'text-gray-500 border-white/10' : 'text-white border-white/30'}`}>
           {project.category}
         </span>
       </div>
@@ -154,7 +155,7 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
 
 export default function WorkPage() {
   return (
-    // UPDATED: Removed bottom padding (pb-0) to allow seamless blend into Footer
+    // UPDATED: Removed bottom padding completely
     <main className="min-h-screen pt-24 pb-0 px-6 relative overflow-hidden">
       
       {/* === BACKGROUND ATMOSPHERE === */}
@@ -218,22 +219,22 @@ export default function WorkPage() {
       </div>
 
       {/* === PROJECTS GRID === */}
-      {/* Added mb-20 to give some space before the fade-out */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-x-16 md:gap-y-20 mb-20 relative z-10">
+      {/* UPDATED: Reduced margin-bottom from mb-20 to mb-8 */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-x-16 md:gap-y-20 mb-8 relative z-10">
         {projects.map((project, index) => (
           <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </div>
 
       {/* === PREMIUM BLENDING EFFECT === */}
-      {/* Replaced the hard CTA with a soft atmospheric transition that flows into the Footer */}
-      <div className="relative w-full h-40 mt-10">
+      {/* UPDATED: Reduced height and margin to pull footer closer */}
+      <div className="relative w-full h-10 mt-0">
         
         {/* 1. Atmospheric Glow connecting to the Footer's 'Get a Quote' section */}
-        <div className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-purple-900/20 blur-[120px] pointer-events-none z-0" />
+        <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 w-full max-w-4xl h-[200px] bg-purple-900/10 blur-[100px] pointer-events-none z-0" />
         
         {/* 2. Soft Gradient Fade at the very bottom to blend into black */}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10" />
+        <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10" />
       </div>
 
     </main>
