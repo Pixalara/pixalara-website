@@ -8,7 +8,7 @@ import {
   FaHome, FaRocket, FaShieldAlt, FaClock 
 } from 'react-icons/fa';
 
-// === UPDATED COUNTRY LIST WITH DYNAMIC PLACEHOLDERS ===
+// === COUNTRY LIST (With Dynamic Placeholders) ===
 const countryCodes = [
   { code: "+1", country: "US", flag: "🇺🇸", placeholder: "(555) 123-4567" },
   { code: "+91", country: "IN", flag: "🇮🇳", placeholder: "98765 43210" },
@@ -66,7 +66,7 @@ export default function ContactPage() {
   // Multi-Select Project Types
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
-  // Dropdown State - Defaults to US (index 0)
+  // Dropdown State
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -88,21 +88,19 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Toggle Project Selection
   const toggleProject = (project: string) => {
     if (selectedProjects.includes(project)) {
       setSelectedProjects(selectedProjects.filter(p => p !== project));
     } else {
       setSelectedProjects([...selectedProjects, project]);
     }
-    setErrorMsg(''); // Clear error on selection
+    setErrorMsg(''); 
   };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrorMsg('');
 
-    // Validation
     if (selectedProjects.length === 0) {
       setErrorMsg('Please select at least one project type.');
       return;
@@ -139,14 +137,15 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="min-h-screen pt-24 pb-0 px-6 overflow-hidden relative">
+    // FIX 1: Removed 'px-6' from main to allow full-width background blending
+    <main className="min-h-screen pt-24 pb-0 overflow-hidden relative">
       
       {/* Background Decor */}
       <div className="fixed top-0 left-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-      {/* Grid Layout */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch relative z-10 mb-20">
+      {/* Grid Layout - FIX 2: Added 'px-6' here so content doesn't touch edges */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch relative z-10 mb-20 px-6">
         
         {/* === LEFT SIDE: INFO (Col Span 5) === */}
         <motion.div 
@@ -336,7 +335,6 @@ export default function ContactPage() {
                       </div>
                     )}
                   </div>
-                  {/* UPDATED: Dynamic Placeholder based on selected country */}
                   <input 
                     type="tel" 
                     name="mobile" 
@@ -390,7 +388,6 @@ export default function ContactPage() {
 
               {/* Row 4: Budget Selection (FIXED SPACING) */}
               <motion.div variants={itemVariants} className="mt-8">
-                {/* Added 'block' and 'mb-6' to separate label from buttons */}
                 <label className="block text-sm text-gray-400 font-bold uppercase tracking-wider mb-6">Project Budget</label>
                 <div className="flex flex-wrap gap-3">
                   {budgets.map((b) => (
