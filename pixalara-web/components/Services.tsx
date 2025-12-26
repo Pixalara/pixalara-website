@@ -82,6 +82,9 @@ const CreativeCard = ({ title, desc, icon, span, color, bgPattern, index }: any)
   const contentY = useTransform(mouseY, [-0.5, 0.5], ["10px", "-10px"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only run mouse logic on larger screens to save performance
+    if (window.innerWidth < 768) return; 
+
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
@@ -106,50 +109,60 @@ const CreativeCard = ({ title, desc, icon, span, color, bgPattern, index }: any)
       transition={{ duration: 0.6, delay: index * 0.1 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative group min-h-[450px] rounded-[2.5rem] bg-neutral-900 overflow-hidden border border-white/5 ${span}`}
+      // Added active:scale-[0.98] for touch feedback on mobile
+      className={`relative group min-h-[450px] rounded-[2.5rem] bg-neutral-900 overflow-hidden border border-white/5 active:scale-[0.98] transition-transform duration-300 ${span}`}
     >
       
       {/* Background Layers */}
-      <motion.div style={{ x: bgX, y: bgY }} className="absolute -inset-10 opacity-40 group-hover:opacity-100 transition-opacity duration-700">
-        <div className={`w-full h-full bg-gradient-to-br ${color} blur-3xl`} />
+      <motion.div style={{ x: bgX, y: bgY }} className="absolute -inset-10 transition-opacity duration-700">
+        {/* FIX: 'opacity-100' on mobile (default), 'md:opacity-40' on desktop */}
+        <div className={`w-full h-full bg-gradient-to-br ${color} blur-3xl opacity-100 md:opacity-40 md:group-hover:opacity-100 transition-opacity duration-500`} />
       </motion.div>
-      <div className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-500" style={{ backgroundImage: bgPattern, backgroundSize: "20px 20px" }} />
-      <div className="absolute inset-0 bg-neutral-950/80 group-hover:bg-neutral-950/60 transition-colors duration-500" />
+      
+      {/* Pattern: Brighter on mobile by default */}
+      <div 
+        className="absolute inset-0 transition-opacity duration-500 opacity-30 md:opacity-10 md:group-hover:opacity-30" 
+        style={{ backgroundImage: bgPattern, backgroundSize: "20px 20px" }} 
+      />
+      
+      {/* Overlay: Lighter on mobile so colors pop */}
+      <div className="absolute inset-0 transition-colors duration-500 bg-neutral-950/60 md:bg-neutral-950/80 md:group-hover:bg-neutral-950/60" />
 
       {/* Content Layer */}
       <motion.div style={{ x: contentX, y: contentY }} className="relative h-full p-10 flex flex-col justify-between z-20">
         <div>
-          {/* Bigger Icon Box */}
+          {/* Icon Box: Always glowing on mobile */}
           <div className="relative w-20 h-20 mb-8">
-            <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} blur-md opacity-50 group-hover:opacity-100 transition-opacity`} />
+            <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} blur-md transition-opacity opacity-100 md:opacity-50 md:group-hover:opacity-100`} />
             <div className="relative w-full h-full bg-black rounded-2xl border border-white/10 flex items-center justify-center text-3xl text-white shadow-xl">
               {icon}
             </div>
           </div>
 
-          {/* Bigger Title */}
+          {/* Title */}
           <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight group-hover:scale-[1.02] origin-left transition-transform">
             {title}
           </h3>
           
-          {/* Bigger Description */}
-          <p className="text-gray-300 text-lg leading-relaxed font-medium group-hover:text-white transition-colors">
+          {/* Description: White on mobile, gray-to-white on desktop */}
+          <p className="text-lg leading-relaxed font-medium transition-colors text-white md:text-gray-300 md:group-hover:text-white">
             {desc}
           </p>
         </div>
 
-        {/* Bigger Button - REPLACED DIV WITH LINK */}
+        {/* Button: Visible on mobile, dimmer on desktop */}
         <Link href="/services" className="flex items-center gap-4 mt-8 w-fit">
-          <div className={`w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-300`}>
+          <div className={`w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 bg-white text-black md:bg-transparent md:text-white md:group-hover:bg-white md:group-hover:text-black`}>
             <FaArrowRight className="-rotate-45 group-hover:rotate-0 transition-transform duration-300 text-lg" />
           </div>
-          <span className="text-sm font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors">
+          <span className="text-sm font-bold uppercase tracking-widest transition-colors text-white md:text-white/50 md:group-hover:text-white">
             View Service
           </span>
         </Link>
       </motion.div>
 
-      <div className={`absolute inset-0 border-2 border-transparent group-hover:border-white/10 rounded-[2.5rem] transition-colors duration-500 pointer-events-none`} />
+      {/* Border Glow: Visible on mobile */}
+      <div className={`absolute inset-0 border-2 rounded-[2.5rem] transition-colors duration-500 pointer-events-none border-white/10 md:border-transparent md:group-hover:border-white/10`} />
     </motion.div>
   );
 };
@@ -157,10 +170,9 @@ const CreativeCard = ({ title, desc, icon, span, color, bgPattern, index }: any)
 // === MAIN SECTION ===
 export default function Services() {
   return (
-    // FIX: Changed 'py-32' to 'pt-10 pb-32' to drastically reduce top gap
     <section className="bg-transparent pt-10 pb-32 px-6 relative">
       
-      {/* === NEW CONNECTOR: Smooth Black-to-Transparent Fade === */}
+      {/* === CONNECTOR FADE === */}
       <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-black to-transparent z-0 pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto relative z-10">
