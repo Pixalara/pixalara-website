@@ -19,7 +19,6 @@ const brands = [
 
 export default function BrandMarquee() {
   return (
-    // FIX: Changed 'py-20' to 'pt-20 pb-2' to reduce the bottom gap
     <section className="pt-20 pb-2 bg-black overflow-hidden relative border-t border-white/5">
       
       <div className="text-center mb-10 px-4">
@@ -48,10 +47,34 @@ export default function BrandMarquee() {
           {[...brands, ...brands].map((brand, index) => (
             <div 
               key={index} 
-              className="flex items-center gap-3 text-4xl text-gray-800 hover:text-white transition-colors duration-500 cursor-pointer group"
+              className={`
+                flex items-center gap-3 text-4xl transition-all duration-500 cursor-pointer group
+                active:scale-95 
+                
+                /* === MOBILE: ALWAYS VISIBLE === */
+                text-white
+
+                /* === DESKTOP: DIMMED DEFAULT, GLOW ON HOVER === */
+                md:text-gray-800 md:hover:text-white
+              `}
             >
-              <span className="group-hover:text-cyan-400 transition-colors">{brand.icon}</span>
-              <span className="text-lg font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 -ml-2">
+              <span className={`
+                transition-colors
+                /* Mobile: Always Cyan */
+                text-cyan-400 
+                /* Desktop: Inherit -> Cyan on Hover */
+                md:text-inherit md:group-hover:text-cyan-400
+              `}>
+                {brand.icon}
+              </span>
+              
+              <span className={`
+                text-lg font-bold font-mono transition-opacity duration-300 -ml-2
+                /* Mobile: Always Visible */
+                opacity-100
+                /* Desktop: Hidden -> Visible on Hover */
+                md:opacity-0 md:group-hover:opacity-100
+              `}>
                 {brand.name}
               </span>
             </div>
