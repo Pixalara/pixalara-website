@@ -1,11 +1,13 @@
-'use client'; // <--- THIS LINE IS CRITICAL (Must be at the very top)
+'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FaArrowRight, FaRocket } from 'react-icons/fa';
 
 export default function CTA() {
   return (
-    <section className="py-32 px-6 relative overflow-hidden flex items-center justify-center">
+    // FIX: Changed 'py-32' to 'pt-0 pb-32'. 
+    // This removes the top gap since the previous section already has bottom spacing.
+    <section className="pt-0 pb-32 px-6 relative overflow-hidden flex items-center justify-center">
       
       {/* Background Gradients */}
       <div className="absolute inset-0 bg-black">
