@@ -68,8 +68,8 @@ export default function Footer() {
     <footer className="bg-black relative overflow-hidden border-t border-white/10">
       
       {/* 1. CALL TO ACTION SECTION */}
-      {/* Only show if NOT on contact page */}
-      {pathname !== '/contact' && (
+      {/* UPDATED: Hide on Contact Page AND Home Page ('/') */}
+      {pathname !== '/contact' && pathname !== '/' && (
         <div className="relative py-32 px-6 text-center z-10">
           
           {/* Background Glow */}
