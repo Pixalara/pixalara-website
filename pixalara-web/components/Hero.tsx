@@ -16,7 +16,6 @@ const rollingTexts = [
 ];
 
 export default function Hero() {
-  // Default to FALSE so the overlay is visible by default (preventing flash)
   const [hasEntered, setHasEntered] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -35,7 +34,8 @@ export default function Hero() {
     if (hasEntered && videoRef.current) {
       const video = videoRef.current;
       video.muted = false;
-      video.volume = 0.5; // Force 50% volume
+      // UPDATED: Changed from 0.5 to 0.1 for a calm, ambient feel
+      video.volume = 0.1; 
       video.play().catch(() => {}); 
     }
   }, [hasEntered]);
@@ -61,12 +61,14 @@ export default function Hero() {
   const handleEnter = () => {
     if (videoRef.current) {
       videoRef.current.muted = false;
-      videoRef.current.volume = 0.5;
+      // UPDATED: Changed from 0.5 to 0.1
+      videoRef.current.volume = 0.1;
       videoRef.current.play().catch((e) => console.log("Play error:", e));
 
       // Force volume again slightly later to override browser defaults
       setTimeout(() => {
-        if (videoRef.current) videoRef.current.volume = 0.5;
+        // UPDATED: Changed from 0.5 to 0.1
+        if (videoRef.current) videoRef.current.volume = 0.1;
       }, 50);
     }
 
@@ -76,7 +78,11 @@ export default function Hero() {
 
   const toggleAudio = () => {
     if (videoRef.current) {
+      // Toggle between Muted and Low Volume (0.1)
       videoRef.current.muted = !isMuted;
+      if (!videoRef.current.muted) {
+        videoRef.current.volume = 0.1; // Ensure it goes back to calm volume when unmuted
+      }
       setIsMuted(!isMuted);
     }
   };
@@ -85,11 +91,9 @@ export default function Hero() {
     <section className="relative w-full h-screen overflow-hidden bg-transparent flex items-center justify-center">
       
       {/* === 1. PREMIUM ENTRY OVERLAY === */}
-      {/* Removed the 'isLoading' check so this renders immediately */}
       <AnimatePresence>
         {!hasEntered && (
           <motion.div 
-            // Start visible to cover underlying content immediately
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
             transition={{ duration: 1, ease: "easeInOut" }}
