@@ -137,14 +137,13 @@ export default function ContactPage() {
   }
 
   return (
-    // FIX 1: Removed 'px-6' from main to allow full-width background blending
     <main className="min-h-screen pt-24 pb-0 overflow-hidden relative">
       
       {/* Background Decor */}
       <div className="fixed top-0 left-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-      {/* Grid Layout - FIX 2: Added 'px-6' here so content doesn't touch edges */}
+      {/* Grid Layout */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch relative z-10 mb-20 px-6">
         
         {/* === LEFT SIDE: INFO (Col Span 5) === */}
@@ -193,7 +192,8 @@ export default function ContactPage() {
           </div>
 
           {/* === CONVERSION BOOSTER SECTION === */}
-          <div className="border-t border-white/10 pt-10 mt-auto">
+          {/* FIX: Changed 'mt-auto' to 'mt-12' to reduce the gap significantly */}
+          <div className="border-t border-white/10 pt-10 mt-12">
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-8">
               Why Global Brands Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">Pixalara</span>?
             </h3>
