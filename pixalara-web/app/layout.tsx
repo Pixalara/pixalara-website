@@ -3,11 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar"; 
 import Footer from "@/components/Footer"; 
-import SmoothScrolling from "@/components/SmoothScrolling"; // <--- 1. IMPORT ADDED
+import SmoothScrolling from "@/components/SmoothScrolling"; 
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  // FIX: This tells Next.js your real domain for SEO images
+  metadataBase: new URL("https://pixalara.com"), 
+
   title: {
     default: "Pixalara | Global Digital Experience Agency",
     template: "%s | Pixalara"
@@ -21,14 +24,33 @@ export const metadata: Metadata = {
     siteName: "Pixalara",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: '/android-chrome-512x512.png', 
+        width: 512,
+        height: 512,
+        alt: 'Pixalara Logo',
+      },
+    ],
   },
-  // === GOOGLE SEO ICON FIX ===
   icons: {
-    icon: '/icon.jpg',      
-    shortcut: '/icon.jpg',
-    apple: '/icon.jpg',
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'manifest',
+        url: '/site.webmanifest',
+      },
+    ],
   },
-  // ===========================
 };
 
 export default function RootLayout({
@@ -39,7 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SmoothScrolling> {/* <--- 2. WRAPPER ADDED */}
+        <SmoothScrolling>
           <Navbar />
           {children}
           <Footer />
