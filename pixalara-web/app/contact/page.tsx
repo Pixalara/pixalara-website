@@ -179,6 +179,7 @@ export default function ContactPage() {
                 </div>
               </a>
 
+              {/* HQ Card */}
               <div className="flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/5 transition-all">
                 <div className="w-14 h-14 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-2xl text-purple-400">
                   <FaMapMarkerAlt />
@@ -188,11 +189,22 @@ export default function ContactPage() {
                   <p className="text-xl text-white font-medium">Chicago, Illinois, US</p>
                 </div>
               </div>
+
+              {/* NEW: Development Office Card */}
+              <div className="flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/5 transition-all">
+                <div className="w-14 h-14 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-2xl text-purple-400">
+                  <FaMapMarkerAlt />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Development Office</p>
+                  <p className="text-xl text-white font-medium">Electronic City, Bengaluru, IN</p>
+                </div>
+              </div>
+
             </div>
           </div>
 
           {/* === CONVERSION BOOSTER SECTION === */}
-          {/* Kept 'mt-12' to maintain reduced gap */}
           <div className="border-t border-white/10 pt-10 mt-12">
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-8">
               Why Global Brands Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">Pixalara</span>?
@@ -305,12 +317,10 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <motion.div variants={itemVariants} className="space-y-3">
                   <label className="block text-sm text-gray-400 font-bold uppercase tracking-wider">Name</label>
-                  {/* UPDATED: Changed placeholder to 'Jane Smith' */}
                   <input required name="name" value={formData.name} onChange={handleChange} type="text" placeholder="Jane Smith" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:bg-black/60 transition-all" />
                 </motion.div>
                 <motion.div variants={itemVariants} className="space-y-3">
                   <label className="block text-sm text-gray-400 font-bold uppercase tracking-wider">Email</label>
-                  {/* UPDATED: Changed placeholder to 'jane@company.com' */}
                   <input required name="email" value={formData.email} onChange={handleChange} type="email" placeholder="jane@company.com" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:bg-black/60 transition-all" />
                 </motion.div>
               </div>
