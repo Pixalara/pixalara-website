@@ -44,6 +44,25 @@ const projects = [
     status: "wip",
     image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=800&auto=format&fit=crop",
   },
+  // === NEW PROJECTS ADDED BELOW ===
+  {
+    id: 5,
+    title: "CXM 360 Experience",
+    category: "App Development",
+    tag: "SaaS Dashboard",
+    desc: "A comprehensive Customer Experience Management system to track user journeys, feedback, and engagement metrics in real-time.",
+    status: "wip", // Set to 'live' if you have a link
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", // Analytics visuals
+  },
+  {
+    id: 6,
+    title: "EduFlow Student System",
+    category: "Web Design",
+    tag: "Management Portal",
+    desc: "An intuitive student management dashboard for educational institutions to handle records, attendance, and performance tracking.",
+    status: "wip", 
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop", // Education visuals
+  },
 ];
 
 // Filter Categories
@@ -194,7 +213,6 @@ export default function WorkPage() {
         </div>
 
         {/* === FILTER TABS (Fixed Mobile Alignment) === */}
-        {/* ADDED: justify-center for symmetry, gap-3 for mobile fit */}
         <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4 mb-12">
           {filters.map((filter) => (
             <button
