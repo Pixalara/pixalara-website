@@ -19,10 +19,9 @@ export default function Hero() {
   const [hasEntered, setHasEntered] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null); // New Audio Reference
+  const audioRef = useRef<HTMLAudioElement>(null); 
   const [textIndex, setTextIndex] = useState(0);
 
-  // 1. CHECK SESSION STORAGE ON MOUNT
   useEffect(() => {
     const visited = sessionStorage.getItem('hasEnteredSite');
     if (visited) {
@@ -30,23 +29,19 @@ export default function Hero() {
     }
   }, []);
 
-  // 2. FORCE AUDIO PLAY ON ENTRY
   useEffect(() => {
     if (hasEntered) {
-      // Play Video (Muted)
       if (videoRef.current) {
-        videoRef.current.muted = true; // Always mute the video track
+        videoRef.current.muted = true; 
         videoRef.current.play().catch(() => {});
       }
-      // Play Separate Audio (Low Volume)
       if (audioRef.current) {
-        audioRef.current.volume = 0.2; // Set volume to 20% (Very Calm)
+        audioRef.current.volume = 0.2; 
         audioRef.current.play().catch((e) => console.log("Audio play error:", e));
       }
     }
   }, [hasEntered]);
 
-  // 3. Lock scrolling
   useEffect(() => {
     if (!hasEntered) {
       document.body.style.overflow = 'hidden';
@@ -55,7 +50,6 @@ export default function Hero() {
     }
   }, [hasEntered]);
 
-  // 4. Auto-rotate text
   useEffect(() => {
     const interval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % rollingTexts.length);
@@ -63,20 +57,15 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  // === ENTER SITE HANDLER ===
   const handleEnter = () => {
-    // 1. Play Video (Visuals only)
     if (videoRef.current) {
       videoRef.current.muted = true; 
       videoRef.current.play().catch(() => {});
     }
-
-    // 2. Play Music (Audio only)
     if (audioRef.current) {
-      audioRef.current.volume = 0.2; // Start at 20%
+      audioRef.current.volume = 0.2; 
       audioRef.current.play().catch((e) => console.log("Play error:", e));
     }
-
     setHasEntered(true);
     sessionStorage.setItem('hasEnteredSite', 'true');
   };
@@ -84,11 +73,9 @@ export default function Hero() {
   const toggleAudio = () => {
     if (audioRef.current) {
       if (isMuted) {
-        // Unmute
-        audioRef.current.volume = 0.2; // Return to low volume
+        audioRef.current.volume = 0.2; 
         audioRef.current.muted = false;
       } else {
-        // Mute
         audioRef.current.muted = true;
       }
       setIsMuted(!isMuted);
@@ -98,8 +85,6 @@ export default function Hero() {
   return (
     <section className="relative w-full h-screen overflow-hidden bg-transparent flex items-center justify-center">
       
-      {/* === NEW: SEPARATE AUDIO PLAYER === */}
-      {/* Ensure you add 'hero-music.mp3' to your public folder */}
       <audio ref={audioRef} loop preload="auto">
         <source src="/hero-music.mp3" type="audio/mp3" />
       </audio>
@@ -114,7 +99,6 @@ export default function Hero() {
             className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center cursor-pointer overflow-hidden"
             onClick={handleEnter}
           >
-            {/* Atmospheric Background Glow */}
             <motion.div 
               animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.2, 1] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -127,65 +111,39 @@ export default function Hero() {
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="text-center relative z-10 px-6"
             >
+              {/* REVERTED HEADING: Clean alignment with Superscript Trademark */}
               <h1 className="text-6xl md:text-9xl font-black mb-6 tracking-tighter">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
-                  PIXALARA
+                  PIXALARA<sup className="text-[0.3em] ml-1 select-none">®</sup>
                 </span>
               </h1>
 
               <div className="space-y-2 mb-16">
-                <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.8 }}
-                  className="text-2xl md:text-4xl text-white font-light tracking-tight"
-                >
-                  Digital Experiences.
-                </motion.p>
-                <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                  className="text-2xl md:text-4xl text-gray-500 font-bold tracking-tight"
-                >
+                <p className="text-2xl md:text-4xl text-white font-light tracking-tight">Digital Experiences.</p>
+                <p className="text-2xl md:text-4xl text-gray-500 font-bold tracking-tight">
                   Engineered to <span className="text-white">Scale.</span>
-                </motion.p>
+                </p>
               </div>
               
-              <motion.button 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="group relative inline-flex items-center gap-4 px-10 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-cyan-500/50 transition-all duration-500"
-              >
+              <button className="group relative inline-flex items-center gap-4 px-10 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-cyan-500/50 transition-all duration-500">
                 <span className="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-gray-300 group-hover:text-white transition-colors">
                   Enter Site
                 </span>
                 <FaArrowRight className="text-gray-500 group-hover:translate-x-1 group-hover:text-cyan-400 transition-all duration-300" />
-              </motion.button>
+              </button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-
       {/* === 2. MAIN HERO CONTENT === */}
-      
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />
-        <video 
-          ref={videoRef}
-          preload="auto"
-          loop 
-          muted // ALWAYS MUTED - We use separate audio now
-          playsInline 
-          className="w-full h-full object-cover opacity-60"
-        >
+        <video ref={videoRef} preload="auto" loop muted playsInline className="w-full h-full object-cover opacity-60">
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
       </div>
 
-      {/* Main Text Content */}
       {hasEntered && (
         <>
           <div className="relative z-20 text-center px-4 max-w-5xl">
@@ -201,7 +159,6 @@ export default function Hero() {
               </span>
             </motion.h1>
 
-            {/* Rolling Text */}
             <div className="h-20 md:h-24 overflow-hidden relative mb-8 flex items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.p 
@@ -217,17 +174,19 @@ export default function Hero() {
               </AnimatePresence>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1 }}
-            >
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1 }}>
                <Link href="/contact">
                 <button className="bg-red-600 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-red-700 transition-all shadow-lg shadow-red-600/30">
                   Get Started
                 </button>
                </Link>
             </motion.div>
+          </div>
+
+          <div className="absolute bottom-10 left-10 z-30 hidden md:block">
+            <p className="text-[10px] text-gray-600 tracking-widest uppercase font-medium">
+              Corporate Identity No: ACT-9854
+            </p>
           </div>
 
           <motion.button 
