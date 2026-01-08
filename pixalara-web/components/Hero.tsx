@@ -112,11 +112,23 @@ export default function Hero() {
               className="text-center relative z-10 px-6"
             >
               {/* REVERTED HEADING: Clean alignment with Superscript Trademark */}
-              <h1 className="text-6xl md:text-9xl font-black mb-6 tracking-tighter">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
-                  PIXALARA<sup className="text-[0.3em] ml-1 select-none">®</sup>
-                </span>
-              </h1>
+   <h1 className="text-6xl md:text-9xl font-black mb-6 flex justify-center">
+  <span className="relative inline-block">
+    
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
+      PIXALARA
+    </span>
+
+    <span className="absolute text-white text-[0.32em] top-[0.24em] right-[-0.48em] leading-none">
+      ®
+    </span>
+
+  </span>
+</h1>
+
+
+
+
 
               <div className="space-y-2 mb-16">
                 <p className="text-2xl md:text-4xl text-white font-light tracking-tight">Digital Experiences.</p>
